@@ -10,6 +10,8 @@ from rgbmatrix import RGBMatrix, RGBMatrixOptions
 import sys,os
 import configparser
 
+from python.blueLightFilter import apply_blue_light_filter
+
 if len(sys.argv) > 2:
     username = sys.argv[1]
     token_path = sys.argv[2]
@@ -56,6 +58,7 @@ if len(sys.argv) > 2:
           if ( prevSong != currentSong ):
             response = requests.get(imageURL)
             image = Image.open(BytesIO(response.content))
+            image = apply_blue_light_filter(image)
             image.thumbnail((matrix.width, matrix.height), Image.Resampling.LANCZOS)
             matrix.SetImage(image.convert('RGB'))
             prevSong = currentSong
